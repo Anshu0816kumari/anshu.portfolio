@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anshu Kumari — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf8f3;
+    --surface:#f1ede3;
+    --ink:#21201b;
+    --ink-soft:#57544b;
+    --teal:#14332d;
+    --teal-soft:#3d6b62;
+    --amber:#c9821f;
+    --amber-soft:#e7c28a;
+    --line:#ddd6c4;
+    --cream:#f3eedf;
+    --maxw:1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    margin:0;
+    color:var(--ink);
+    font-weight:500;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  p{margin:0;}
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+
+  /* Skip to content for keyboard users */
+  .skip-link{
+    position:absolute;
+    left:-999px;
+    top:0;
+    background:var(--amber);
+    color:var(--teal);
+    padding:10px 16px;
+    z-index:200;
+  }
+  .skip-link:focus{left:8px;top:8px;}
+
+  :focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:3px;
+  }
+
+  /* ===== Layout shell ===== */
+  .shell{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    min-height:100vh;
+  }
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    background:var(--teal);
+    color:var(--cream);
+    padding:48px 36px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow-y:auto;
+  }
+  .sidebar-top{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .photo-frame{
+    width:150px;
+    height:150px;
+    border-radius:6px;
+    overflow:hidden;
+    border:1px solid rgba(243,238,223,0.25);
+    position:relative;
+  }
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
+    display:block;
+    filter:grayscale(0.15);
+  }
+  .id-name{
+    font-size:1.9rem;
+    line-height:1.15;
+    color:var(--cream);
+  }
+  .id-role{
+    font-size:0.95rem;
+    color:var(--amber-soft);
+    margin-top:6px;
+  }
+  .id-location{
+    font-size:0.85rem;
+    color:rgba(243,238,223,0.65);
+    margin-top:10px;
+  }
+
+  nav.side-nav{
+    margin-top:8px;
+  }
+  nav.side-nav ul{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  nav.side-nav a{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:9px 0;
+    font-size:0.92rem;
+    color:rgba(243,238,223,0.6);
+    border-left:2px solid transparent;
+    padding-left:12px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  nav.side-nav a .idx{
+    font-size:0.72rem;
+    color:rgba(243,238,223,0.35);
+  }
+  nav.side-nav a:hover,
+  nav.side-nav a.active{
+    color:var(--cream);
+    border-left-color:var(--amber);
+  }
+  nav.side-nav a.active .idx{color:var(--amber);}
+
+  .sidebar-bottom{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding-top:24px;
+    border-top:1px solid rgba(243,238,223,0.15);
+    font-size:0.85rem;
+  }
+  .sidebar-bottom a{
+    color:rgba(243,238,223,0.75);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .sidebar-bottom a:hover{color:var(--amber-soft);}
+  .sidebar-bottom svg{width:15px;height:15px;flex:none;}
+
+  /* ===== Mobile top bar ===== */
+  .mobile-bar{display:none;}
+
+  /* ===== Main content ===== */
+  main{
+    max-width:var(--maxw);
+    padding:64px 64px 100px;
+  }
+  section{
+    padding-top:64px;
+    margin-top:-64px; /* offset for sticky-scroll anchor spacing */
+  }
+  section + section{margin-top:64px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--amber);
+    display:block;
+    margin-bottom:10px;
+  }
+  .section-title{
+    font-size:1.7rem;
+    margin-bottom:28px;
+    max-width:520px;
+  }
+
+  /* Hero */
+  .hero{padding-top:0;margin-top:0;}
+  .hero h1{
+    font-size:clamp(2.1rem, 4vw, 2.9rem);
+    max-width:640px;
+    line-height:1.18;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--teal-soft);
+    border-bottom:2px solid var(--amber-soft);
+  }
+  .hero p.lede{
+    margin-top:22px;
+    max-width:520px;
+    color:var(--ink-soft);
+    font-size:1.05rem;
+  }
+  .hero .stat-row{
+    display:flex;
+    gap:40px;
+    margin-top:44px;
+    flex-wrap:wrap;
+  }
+  .stat b{
+    font-family:'Fraunces', serif;
+    font-size:1.9rem;
+    display:block;
+    color:var(--teal);
+  }
+  .stat span{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+
+  /* Divider */
+  .rule{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:0;
+  }
+
+  /* Education timeline — the "one bold element" */
+  .track{
+    position:relative;
+    padding-left:40px;
+  }
+  .track::before{
+    content:"";
+    position:absolute;
+    left:9px;
+    top:6px;
+    bottom:6px;
+    width:2px;
+    background:repeating-linear-gradient(
+      to bottom,
+      var(--line) 0 6px,
+      transparent 6px 12px
+    );
+  }
+  .track-item{
+    position:relative;
+    padding-bottom:36px;
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .track-item.pre-reveal{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  .track-item.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .track-item:last-child{padding-bottom:0;}
+  .track-item::before{
+    content:"";
+    position:absolute;
+    left:-40px;
+    top:4px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--amber);
+  }
+  .track-item.current::before{
+    background:var(--amber);
+  }
+  .track-years{
+    font-size:0.8rem;
+    color:var(--teal-soft);
+    margin-bottom:4px;
+  }
+  .track-title{
+    font-family:'Fraunces', serif;
+    font-size:1.2rem;
+    font-weight:500;
+  }
+  .track-org{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin-top:3px;
+  }
+  .tag-current{
+    display:inline-block;
+    margin-left:10px;
+    font-size:0.68rem;
+    background:var(--amber);
+    color:var(--teal);
+    padding:2px 8px;
+    border-radius:3px;
+    vertical-align:middle;
+  }
+
+  /* Skills */
+  .skill-groups{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .skill-group h3{
+    font-size:0.78rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    color:var(--ink-soft);
+    text-transform:none;
+    margin-bottom:14px;
+  }
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .chip{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:7px 13px;
+    border-radius:5px;
+    font-size:0.88rem;
+    color:var(--ink);
+  }
+
+  /* Certifications */
+  .cert-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:26px 28px;
+    border-radius:6px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:16px;
+    align-items:start;
+  }
+  .cert-card h3{
+    font-size:1.15rem;
+    font-weight:500;
+  }
+  .cert-issuer{
+    color:var(--teal-soft);
+    font-size:0.9rem;
+    margin-top:4px;
+  }
+  .cert-desc{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin-top:10px;
+    max-width:480px;
+  }
+  .cert-id{
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    margin-top:14px;
+  }
+  .cert-badge{
+    font-size:0.72rem;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--teal);
+    background:var(--amber-soft);
+    padding:5px 10px;
+    border-radius:4px;
+    white-space:nowrap;
+  }
+
+  /* Beyond the code */
+  .beyond-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .beyond-card{
+    padding:24px 0 0;
+    border-top:1px solid var(--line);
+  }
+  .beyond-card h3{
+    font-size:1.05rem;
+    font-weight:500;
+    margin-bottom:8px;
+  }
+  .beyond-card p{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+  }
+
+  /* Contact / footer */
+  .contact-panel{
+    background:var(--teal);
+    color:var(--cream);
+    border-radius:8px;
+    padding:44px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .contact-panel h2{color:var(--cream);font-size:1.6rem;}
+  .contact-panel p{color:rgba(243,238,223,0.7);margin-top:10px;max-width:360px;}
+  .contact-links{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .contact-links a{
+    font-size:0.98rem;
+    color:var(--cream);
+    border-bottom:1px solid rgba(243,238,223,0.3);
+    padding-bottom:2px;
+  }
+  .contact-links a:hover{border-color:var(--amber);color:var(--amber-soft);}
+
+  footer.site-foot{
+    text-align:left;
+    padding-top:36px;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .track-item{transition:none;opacity:1;transform:none;}
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{
+      position:relative;
+      height:auto;
+      display:none;
+    }
+    .mobile-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:var(--teal);
+      color:var(--cream);
+      padding:16px 20px;
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    .mobile-bar .m-name{
+      font-family:'Fraunces', serif;
+      font-size:1.05rem;
+    }
+    .mobile-bar button{
+      background:none;
+      border:1px solid rgba(243,238,223,0.4);
+      color:var(--cream);
+      padding:6px 12px;
+      border-radius:5px;
+      font-size:0.8rem;
+      font-family:'IBM Plex Sans', sans-serif;
+    }
+    .sidebar.open{display:flex;position:fixed;inset:0;height:100vh;z-index:99;}
+    main{padding:44px 22px 80px;}
+    .skill-groups{grid-template-columns:1fr;}
+    .beyond-grid{grid-template-columns:1fr;gap:0;}
+    .cert-card{grid-template-columns:1fr;}
+    .contact-panel{padding:30px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<a href="#about" class="skip-link">Skip to content</a>
+
+<div class="mobile-bar">
+  <span class="m-name">Anshu Kumari</span>
+  <button id="navToggle" aria-expanded="false" aria-controls="sidebar">Menu</button>
+</div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="photo-frame">
+        <img src="anshu-photo.png" alt="Portrait of Anshu Kumari">
+      </div>
+      <div>
+        <h1 class="id-name">Anshu Kumari</h1>
+        <p class="id-role">MCA Student &amp; Web Developer</p>
+        <p class="id-location">Hilsa, Nalanda, Bihar</p>
+      </div>
+
+      <nav class="side-nav" aria-label="Section navigation">
+        <ul>
+          <li><a href="#about" class="idx-link"><span class="idx mono">01</span>About</a></li>
+          <li><a href="#education" class="idx-link"><span class="idx mono">02</span>Education</a></li>
+          <li><a href="#skills" class="idx-link"><span class="idx mono">03</span>Skills</a></li>
+          <li><a href="#certifications" class="idx-link"><span class="idx mono">04</span>Certifications</a></li>
+          <li><a href="#beyond" class="idx-link"><span class="idx mono">05</span>Beyond the Code</a></li>
+          <li><a href="#contact" class="idx-link"><span class="idx mono">06</span>Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <a href="mailto:anshu151004kumari@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18v12H3z"/><path d="m3 6 9 7 9-7"/></svg>
+        anshu151004kumari@gmail.com
+      </a>
+      <a href="tel:+918051774844">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h4l1 5-3 2a12 12 0 0 0 6 6l2-3 5 1v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z"/></svg>
+        +91 80517 74844
+      </a>
+      <a href="https://www.linkedin.com/in/anshu-kumari-909316357" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 13v4"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/Anshu0816kumari" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+        GitHub
+      </a>
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <section class="hero" id="about">
+      <span class="eyebrow mono">// about</span>
+      <h1>Building software with the same discipline she brought to the <em>kabaddi court.</em></h1>
+      <p class="lede">
+        I'm an MCA student from Bihar working across C++, Java and Python, and building on
+        the web with HTML, CSS and JavaScript. I like problems with a clear finish line —
+        whether that's a working feature or a tournament match.
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <b>4</b>
+          <span>languages &amp; stacks in daily use</span>
+        </div>
+        <div class="stat">
+          <b>2025&ndash;27</b>
+          <span>MCA in progress, IMPACT College</span>
+        </div>
+        <div class="stat">
+          <b>2</b>
+          <span>college-level Kabaddi tournaments</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="education">
+      <span class="eyebrow mono">// education</span>
+      <h2 class="section-title">A path from Nalanda's classrooms to a Master's in Computer Applications.</h2>
+
+      <div class="track">
+        <div class="track-item current">
+          <p class="track-years mono">2025 &ndash; 2027</p>
+          <h3 class="track-title">Master of Computer Application <span class="tag-current">in progress</span></h3>
+          <p class="track-org">Institute of Management and Planning &amp; Advanced Computer Training (IMPACT) College, Patna</p>
+        </div>
+        <div class="track-item">
+          <p class="track-years mono">2022 &ndash; 2025</p>
+          <h3 class="track-title">Bachelor of Computer Application</h3>
+          <p class="track-org">S U College, Hilsa</p>
+        </div>
+        <div class="track-item">
+          <p class="track-years mono">2020 &ndash; 2022</p>
+          <h3 class="track-title">Intermediate in Science (PCBM)</h3>
+          <p class="track-org">Gramin Intermediate Mahavidyalaya, Diripar, Nalanda</p>
+        </div>
+        <div class="track-item">
+          <p class="track-years mono">2020</p>
+          <h3 class="track-title">Matriculation (10th)</h3>
+          <p class="track-org">Sanjya Gandhi High School, Balawapar, Nalanda</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="skills">
+      <span class="eyebrow mono">// skills</span>
+      <h2 class="section-title">What I build with.</h2>
+
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Programming languages</h3>
+          <div class="chip-row">
+            <span class="chip">C++</span>
+            <span class="chip">C</span>
+            <span class="chip">Java</span>
+            <span class="chip">Python</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Web technologies</h3>
+          <div class="chip-row">
+            <span class="chip">HTML5</span>
+            <span class="chip">CSS3</span>
+            <span class="chip">JavaScript</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Tools &amp; productivity</h3>
+          <div class="chip-row">
+            <span class="chip">Git</span>
+            <span class="chip">GitHub</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="certifications">
+      <span class="eyebrow mono">// certifications</span>
+      <h2 class="section-title">Verified learning.</h2>
+
+      <div class="cert-card">
+        <div>
+          <h3>Basics of Python</h3>
+          <p class="cert-issuer">UniAthena, in partnership with Cambridge International Qualifications, UK &middot; Issued Aug 2026</p>
+          <p class="cert-desc">Completed training covering fundamental concepts of Python programming.</p>
+          <p class="cert-id mono">Credential ID: 9114-2095-9557</p>
+        </div>
+        <span class="cert-badge">Blockchain&#8209;verified</span>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="beyond">
+      <span class="eyebrow mono">// beyond the code</span>
+      <h2 class="section-title">Off the screen.</h2>
+
+      <div class="beyond-grid">
+        <div class="beyond-card">
+          <h3>Sports</h3>
+          <p>Active Kabaddi player, representing college at inter-college tournaments.</p>
+        </div>
+        <div class="beyond-card">
+          <h3>Community &amp; tech events</h3>
+          <p>Regular participant in tech seminars, AI workshops and educational conferences.</p>
+        </div>
+        <div class="beyond-card">
+          <h3>Leadership</h3>
+          <p>Taking on leadership roles across college sports and technical communities.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="contact">
+      <div class="contact-panel">
+        <div>
+          <h2>Let's talk.</h2>
+          <p>Open to internships, junior developer roles, and collaborations in web development.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:anshu151004kumari@gmail.com">anshu151004kumari@gmail.com</a>
+          <a href="tel:+918051774844">+91 80517 74844</a>
+          <a href="https://www.linkedin.com/in/anshu-kumari-909316357" target="_blank" rel="noopener">linkedin.com/in/anshu-kumari-909316357</a>
+          <a href="https://github.com/Anshu0816kumari" target="_blank" rel="noopener">github.com/Anshu0816kumari</a>
+        </div>
+      </div>
+      <footer class="site-foot">
+        <p>Anshu Kumari &middot; Hilsa, Nalanda, Bihar</p>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Mobile menu toggle
+  const toggle = document.getElementById('navToggle');
+  const sidebar = document.getElementById('sidebar');
+  toggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.textContent = isOpen ? 'Close' : 'Menu';
+  });
+
+  // Close mobile menu after choosing a link
+  document.querySelectorAll('.side-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = 'Menu';
+      }
+    });
+  });
+
+  // Active section highlighting in sidebar nav
+  const navLinks = document.querySelectorAll('.side-nav a');
+  const sections = document.querySelectorAll('main section[id]');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`.side-nav a[href="#${entry.target.id}"]`);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => navObserver.observe(s));
+
+  // Reveal the education timeline once, as it scrolls into view.
+  // Items start pre-revealed (hidden) only once JS confirms it can animate
+  // them back in, so the content is never lost if JS fails to run.
+  const trackItems = document.querySelectorAll('.track-item');
+  trackItems.forEach(item => item.classList.add('pre-reveal'));
+
+  const trackObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('in-view'), i * 90);
+        trackObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+  trackItems.forEach(item => trackObserver.observe(item));
+</script>
+</body>
+</html>
